@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Personal reminders — Curo</title>
+<script>try{const p=JSON.parse(localStorage.getItem('curo_display_preferences')||'{}');document.documentElement.dataset.theme=p.theme==='dark'?'dark':'light';document.documentElement.dataset.fontSize=['small','default','large'].includes(p.fontSize)?p.fontSize:'default';document.documentElement.dataset.density=p.density==='compact'?'compact':'comfortable'}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-body">
+{% include "partials/dashboard_sidebar.html" %}
+<main class="dashboard-main">
+{% include "partials/dashboard_top.html" %}
+<section class="dash-panel appointment-booking-panel">
+  <div class="panel-heading">
+    <div>
+      <div class="section-overline">PERSONAL REMINDERS</div>
+      <h2>Save a reminder</h2>
+      <p>This is a personal reminder only. It does not request or confirm a doctor appointment.</p>
+    </div>
+  </div>
+  <form id="appointment-form" class="stack-form">
+    <label>Reminder title
+      <input name="title" required maxlength="160" placeholder="e.g. Bring documents to clinic">
+    </label>
+    <label>Date
+      <input name="appointment_date" type="date" required min="{{ now_date }}">
+    </label>
+    <label>Clinic / location
+      <input name="location" maxlength="160" placeholder="Clinic name or location">
+    </label>
+    <label>Notes
+      <textarea name="notes" rows="3" maxlength="1000" placeholder="Optional"></textarea>
+    </label>
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">Save reminder →</button>
+    </div>
+  </form>
+</section>
+<section class="dash-panel">
+  <div class="panel-heading">
+    <div>
+      <div class="section-overline">YOUR SAVED ITEMS</div>
+      <h2>My reminders</h2>
+      <p>Only reminders you have saved will appear here. No sample reminders are added automatically.</p>
+    </div>
+  </div>
+  <div id="appointment-list" class="simple-list">
+    <p class="empty-note">Loading your reminders…</p>
+  </div>
+</section>
+<div id="notice" class="notice" role="status"></div>
+</main>
+<script>document.querySelector('input[name="appointment_date"]')?.setAttribute('min', new Date().toLocaleDateString('en-CA'));</script>
+<script src="{{ url_for('static', filename='display-settings.js') }}"></script>
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+
+</body>
+</html>

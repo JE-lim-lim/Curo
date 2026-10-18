@@ -1,0 +1,8 @@
+<header class="site-header">
+  <a class="brand-img-link" href="{{ url_for('home') }}" aria-label="Curo homepage"><span class="theme-logo" aria-hidden="true"><img class="logo-light" src="{{ url_for('static', filename='assets/curo-logo.png') }}" alt=""><img class="logo-dark" src="{{ url_for('static', filename='assets/curo-logo-darkmode.png') }}" alt=""></span></a>
+  <nav class="main-nav"><a href="#about">About Us</a><a href="#faq">FAQ</a><a href="#contact">Contact Us</a></nav>
+  <div class="header-actions">{% include "partials/chat_widget.html" %}{% include "partials/display_settings.html" %}
+    {% if user %}<a class="btn btn-outline header-login" href="{{ url_for('login', switch=1) }}">Log in</a><form action="{{ url_for('logout') }}" method="post" class="header-logout-form"><button class="btn header-logout-btn" type="submit">Log out</button></form>
+    {% else %}<a class="btn btn-outline header-login" href="{{ url_for('login') }}">Log in</a><a class="btn btn-primary" href="{{ url_for('signup') }}">Sign up →</a>{% endif %}
+  </div>
+</header>

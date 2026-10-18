@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+curo.db
+.env
+uploads/*
+!uploads/.gitkeep

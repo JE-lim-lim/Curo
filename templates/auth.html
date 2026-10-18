@@ -1,0 +1,155 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% if mode == 'login' %}{% if login_role == 'staff' %}Staff Login{% else %}Patient Login{% endif %}{% else %}Create account{% endif %} — Curo</title>
+    <script>
+        try {
+            const p = JSON.parse(localStorage.getItem('curo_display_preferences') || '{}');
+            document.documentElement.dataset.theme = p.theme === 'dark' ? 'dark' : 'light';
+            document.documentElement.dataset.fontSize = ['small', 'default', 'large'].includes(p.fontSize) ? p.fontSize : 'default';
+            document.documentElement.dataset.density = p.density === 'compact' ? 'compact' : 'comfortable';
+        } catch (e) {
+            document.documentElement.dataset.theme = 'light';
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-body">
+    <header class="auth-top">
+        <a class="auth-brand" href="{{ url_for('home') }}" aria-label="Curo homepage">
+            <span class="theme-logo" aria-hidden="true">
+                <img class="logo-light" src="{{ url_for('static', filename='assets/curo-logo.png') }}" alt="">
+                <img class="logo-dark" src="{{ url_for('static', filename='assets/curo-logo-darkmode.png') }}" alt="">
+            </span>
+        </a>
+        {% include "partials/display_settings.html" %}
+    </header>
+
+    <div class="auth-page">
+        <section class="auth-card">
+            <div class="auth-symbol">♡</div>
+            <div class="section-overline">
+                {% if mode == 'login' %}
+                    {% if login_role == 'staff' %}
+                        CURO STAFF PORTAL
+                    {% else %}
+                        WELCOME BACK
+                    {% endif %}
+                {% else %}
+                    YOUR CARE SPACE STARTS HERE
+                {% endif %}
+            </div>
+
+            <h1>
+                {% if mode == 'login' %}
+                    {% if request.args.get('switch') == '1' %}
+                        Sign in to <em>another account.</em>
+                    {% elif login_role == 'staff' %}
+                        Welcome to the <em>Staff Portal.</em>
+                    {% else %}
+                        Good to see you <em>again.</em>
+                    {% endif %}
+                {% else %}
+                    Make space for <em>clearer care.</em>
+                {% endif %}
+            </h1>
+
+            <p class="auth-intro">
+                {% if mode == 'login' %}
+                    {% if request.args.get('switch') == '1' %}
+                        Enter the credentials for the account you want to use. Your current session stays active unless the new sign-in succeeds.
+                    {% elif login_role == 'staff' %}
+                        Sign in to manage appointment requests, doctor profiles and clinic activity.
+                    {% else %}
+                        Sign in to manage your care plan, doctor appointments and saved details.
+                    {% endif %}
+                {% else %}
+                    Create an account to organise your care tasks and appointments in one place.
+                {% endif %}
+            </p>
+
+            {% if mode == 'login' %}
+                <nav class="login-role-switch" aria-label="Choose login type">
+                    <a class="login-role-option {% if login_role == 'patient' %}active{% endif %}"
+                       href="{{ url_for('login', role='patient', switch=request.args.get('switch')) }}"
+                       {% if login_role == 'patient' %}aria-current="page"{% endif %}>
+                        <strong>Patient</strong>
+                    </a>
+                    <a class="login-role-option {% if login_role == 'staff' %}active{% endif %}"
+                       href="{{ url_for('login', role='staff', switch=request.args.get('switch')) }}"
+                       {% if login_role == 'staff' %}aria-current="page"{% endif %}>
+                        <strong>Staff</strong>
+                    </a>
+                </nav>
+            {% endif %}
+
+            {% if error %}
+                <div class="error-message" role="alert">{{ error }}</div>
+            {% endif %}
+
+            <form method="post" class="auth-form">
+                {% if mode == 'login' %}
+                    <input type="hidden" name="login_role" value="{{ login_role }}">
+                {% endif %}
+
+                {% if mode == 'signup' %}
+                    <label>
+                        Your name
+                        <input name="name" required minlength="2" autocomplete="name" placeholder="e.g. Alex Morgan">
+                    </label>
+                {% endif %}
+
+                <label>
+                    Email address
+                    <input type="email" name="email" required autocomplete="email" placeholder="you@example.com">
+                </label>
+
+                <label>
+                    Password
+                    <input type="password" name="password" required minlength="{% if mode == 'signup' %}8{% else %}1{% endif %}" autocomplete="{% if mode == 'login' %}current-password{% else %}new-password{% endif %}" placeholder="{% if mode == 'signup' %}At least 8 characters{% else %}Enter your password{% endif %}">
+                </label>
+
+                {% if mode == 'signup' %}
+                    <label>
+                        Confirm password
+                        <input type="password" name="confirm_password" required minlength="8" autocomplete="new-password" placeholder="Enter your password again">
+                    </label>
+                {% endif %}
+
+                <button class="btn btn-primary submit-btn" type="submit">
+                    {% if mode == 'login' %}
+                        {% if login_role == 'staff' %}
+                            Log in to Staff Portal
+                        {% else %}
+                            Log in to Curo
+                        {% endif %}
+                    {% else %}
+                        Create my account
+                    {% endif %}
+                    →
+                </button>
+            </form>
+
+            {% if mode == 'signup' %}
+                <div class="auth-switch">
+                    Already have an account? <a href="{{ url_for('login') }}">Log in</a>
+                </div>
+            {% elif mode == 'login' and login_role == 'patient' %}
+                <div class="auth-switch">
+                    New to Curo? <a href="{{ url_for('signup') }}">Create a patient account</a>
+                </div>
+            {% endif %}
+        </section>
+
+        <footer class="auth-footer">
+            <span>Copyright © 2026 Curo · Care &amp; Cure</span>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='display-settings.js') }}"></script>
+</body>
+</html>

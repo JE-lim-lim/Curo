@@ -1,0 +1,91 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Staff Workspace — Curo</title><script>try{const p=JSON.parse(localStorage.getItem('curo_display_preferences')||'{}');document.documentElement.dataset.theme=p.theme==='dark'?'dark':'light';document.documentElement.dataset.fontSize=['small','default','large'].includes(p.fontSize)?p.fontSize:'default';document.documentElement.dataset.density=p.density==='compact'?'compact':'comfortable'}catch(e){document.documentElement.dataset.theme='light'}</script><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"><style>
+.staff-management-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:18px}
+.staff-management-card{min-width:0;border:1px solid var(--border-color,#dce7e4);border-radius:16px;padding:20px;background:var(--surface-color,#fff)}
+.staff-management-card h3{margin-top:0}
+.staff-doctor-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.staff-doctor-form label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.92rem}
+.staff-doctor-form input,.staff-doctor-form textarea{width:100%;min-width:0;box-sizing:border-box;padding:10px 12px;border:1px solid var(--border-color,#dce7e4);border-radius:9px;background:var(--surface-color,#fff);color:inherit;font:inherit}
+.staff-doctor-form label:nth-last-child(2),.staff-doctor-form label:nth-last-child(1),.staff-doctor-form button{grid-column:1/-1}
+.staff-doctor-list{display:grid;gap:10px}
+.staff-doctor-row,.staff-audit-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--border-color,#e1e9e7)}
+.staff-doctor-row p,.staff-audit-row p{margin:4px 0 0}
+.staff-audit-row{justify-content:flex-start;align-items:flex-start}
+.staff-audit-row>span{min-width:130px;font-size:.85rem;color:var(--muted-color,#687d79)}
+@media(max-width:600px){.staff-doctor-form{grid-template-columns:1fr}.staff-doctor-form label,.staff-doctor-form button{grid-column:1}.staff-audit-row{display:block}.staff-audit-row>span{display:block;margin-bottom:5px}}
+</style><style>
+.staff-directory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:18px}
+.staff-directory-card{border:1px solid var(--border-color,#dce7e4);border-radius:16px;padding:18px;background:var(--surface-color,#fff);min-width:0}
+.staff-directory-card h3{margin:8px 0 12px}
+.staff-directory-card p{margin:7px 0;overflow-wrap:anywhere}
+.staff-body .sidebar .side-link{display:flex;align-items:center;min-height:48px;box-sizing:border-box}
+.staff-body .sidebar .side-link:focus-visible{outline:2px solid #2d8278;outline-offset:2px}
+html{scroll-behavior:auto}
+
+/* Staff pages share the same design tokens and spacing as Patient pages. */
+.staff-body .sidebar{gap:8px}
+.staff-body .side-link{font-size:14px;line-height:1.45;padding:13px 14px;border-radius:10px;transition:background .15s ease,color .15s ease}
+.staff-body .sidebar .side-link.active{background:var(--brand-soft);color:var(--brand-dark);font-weight:800}
+.staff-body .staff-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+.staff-body .staff-booking-card,.staff-body .staff-management-card,.staff-body .staff-directory-card{border-color:var(--line);background:var(--surface);border-radius:16px;box-shadow:none}
+.staff-body .staff-management-card h3,.staff-body .staff-directory-card h3{font-family:Manrope,sans-serif;font-size:18px}
+.staff-body .staff-management-card p,.staff-body .staff-directory-card p,.staff-body .staff-booking-card p{font-size:14px;line-height:1.7}
+.staff-body .staff-doctor-form label,.staff-body .staff-action-form label{font-size:13px;line-height:1.5}
+.staff-body .staff-doctor-form input,.staff-body .staff-doctor-form textarea,.staff-body .staff-action-form textarea{font:inherit;border-color:var(--line);background:var(--surface);color:var(--text);border-radius:10px;padding:12px}
+.staff-body .staff-audit-row{border-color:var(--line);padding:14px 0}
+.staff-body .staff-audit-row p{font-size:13px;line-height:1.6}
+@media(max-width:760px){.staff-body .sidebar{display:flex;flex-direction:column;align-items:stretch}.staff-body .dash-logo{width:130px}.staff-body .sidebar-bottom{margin-top:12px}.staff-body .staff-stats{grid-template-columns:1fr}.staff-body .staff-review-actions{grid-template-columns:1fr}}
+</style></head><body class="dashboard-body staff-body"><aside class="sidebar"><a class="dash-logo" href="{{ url_for('home') }}" aria-label="Curo homepage"><span class="theme-logo" aria-hidden="true"><img class="logo-light" src="{{ url_for('static', filename='assets/curo-logo.png') }}" alt=""><img class="logo-dark" src="{{ url_for('static', filename='assets/curo-logo-darkmode.png') }}" alt=""></span></a><div class="sidebar-label">STAFF WORKSPACE</div><a class="side-link {% if section == 'appointment-desk' %}active{% endif %}" href="{{ url_for('staff_section', section='appointment-desk') }}">▣ &nbsp; Appointment desk</a><a class="side-link {% if section == 'manage-doctors' %}active{% endif %}" href="{{ url_for('staff_section', section='manage-doctors') }}">✚ &nbsp; Manage doctors</a><a class="side-link {% if section == 'clinic-overview' %}active{% endif %}" href="{{ url_for('staff_section', section='clinic-overview') }}">▦ &nbsp; Clinic overview</a><a class="side-link {% if section == 'doctor-directory' %}active{% endif %}" href="{{ url_for('staff_section', section='doctor-directory') }}">⌕ &nbsp; View doctor directory</a><div class="sidebar-bottom"><div class="sidebar-profile sidebar-profile-identity"><span class="user-avatar">{{ (user.name or 'S')[:1]|upper }}</span><span class="sidebar-profile-name">{{ user.name }}</span></div><form method="post" action="{{ url_for('logout') }}"><button class="btn staff-logout staff-logout-danger" type="submit">Log out</button></form></div></aside><main class="dashboard-main">{% set page_titles = {'appointment-desk': ('Appointment desk', 'Review and manage patient appointment requests.'), 'manage-doctors': ('Manage doctors', 'Add doctor profiles and manage their availability.'), 'clinic-overview': ('Clinic overview', 'Review clinic statistics and recent staff activity.'), 'doctor-directory': ('Doctor directory', 'Browse active doctor profiles visible to patients.')} %}{% set page_info = page_titles.get(section, page_titles['appointment-desk']) %}{% with page_title=page_info[0], page_subtitle=page_info[1] %}{% include "partials/dashboard_top.html" %}{% endwith %}{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash-message {{ category }}" role="status">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}{% if section == 'appointment-desk' %}<section class="stats-grid staff-stats"><article class="stat-card"><span>Pending requests</span><strong>{{ pending_count }}</strong><small>Awaiting review</small></article><article class="stat-card"><span>Doctor profiles</span><strong>{{ doctor_count }}</strong><small>Active demo profiles</small></article><article class="stat-card"><span>Total requests shown</span><strong>{{ bookings|length }}</strong><small>Most recent 200</small></article></section>{% endif %}{% if section == 'appointment-desk' %}<section class="dash-panel" id="appointment-desk"><div class="panel-heading"><div><div class="section-overline">APPOINTMENT COORDINATION</div><h2>Appointment requests</h2><p>Review the requested slot and reason. This workspace is for administrative coordination, not diagnosis.</p></div></div>{% if bookings %}<div class="staff-booking-list">{% for booking in bookings %}<article class="staff-booking-card"><div class="booking-card-top"><div><div class="section-overline">REQUEST #{{ booking.id }}</div><h3>{{ booking.patient_name }} <span class="muted">→</span> {{ booking.doctor_name }}</h3><p>{{ booking.specialty }} · {{ booking.appointment_date }} at {{ booking.appointment_time }}</p><small class="muted">{{ booking.patient_email }} · Submitted {{ booking.created_at[:16].replace('T',' ') }}</small></div><span class="status-pill status-{{ booking.status }}">{{ booking.status|title }}</span></div><div class="staff-patient-summary"><strong>Patient-provided reason</strong><p>{{ booking.symptom_summary or booking.symptom_text }}</p><small>AI summary, if present, was created from user-provided text and is not a diagnosis.</small></div>{% if booking.status == 'pending' %}<div class="staff-review-actions"><form method="post" action="{{ url_for('approve_booking', booking_id=booking.id) }}" class="staff-action-form"><label>Staff note (optional)<textarea name="staff_note" rows="2" maxlength="1000" placeholder="Optional confirmation note"></textarea></label><button type="submit" class="btn btn-primary">Approve request</button></form><form method="post" action="{{ url_for('reject_booking', booking_id=booking.id) }}" class="staff-action-form"><label>Reason required for rejection<textarea name="staff_note" rows="2" minlength="3" maxlength="1000" required placeholder="Explain why this time cannot be approved"></textarea></label><button type="submit" class="btn btn-outline reject-btn">Reject request</button></form></div>{% else %}<div class="staff-note"><strong>Staff decision note</strong><p>{{ booking.staff_note or 'No additional note was provided.' }}</p><small class="muted">Reviewed {{ booking.reviewed_at[:16].replace('T',' ') if booking.reviewed_at else '' }}</small></div>{% endif %}</article>{% endfor %}</div>{% else %}<p class="empty-note">No appointment requests yet. New requests from patients will appear here.</p>{% endif %}</section>{% endif %}{% if section == 'manage-doctors' %}<section class="dash-panel staff-management-panel" id="clinic-management">
+<div class="panel-heading"><div><div class="section-overline">CLINIC MANAGEMENT</div><h2>Doctor profiles</h2><p>Add and manage the doctor profiles shown in Curo's public doctor directory.</p></div></div>
+<div class="staff-management-grid">
+<article class="staff-management-card">
+<h3>Add a doctor profile</h3>
+<p class="muted">Only enter verified credentials for real-world use. Demo profiles are not clinical registrations.</p>
+<form method="post" action="{{ url_for('staff_add_doctor') }}" class="staff-doctor-form">
+{% for key,label in [('name','Doctor name'),('specialty','Specialty'),('qualification','Qualification'),('university','University'),('years_experience','Years of experience'),('languages','Languages'),('areas_of_focus','Areas of focus'),('clinic_name','Clinic name'),('clinic_location','Clinic location')] %}
+<label>{{ label }}<input name="{{ key }}" {% if key in ['name','specialty'] %}required{% endif %} {% if key == 'years_experience' %}type="number" min="0" max="80" value="0"{% endif %}></label>
+{% endfor %}
+<label>Biography<textarea name="bio" rows="3"></textarea></label>
+<button class="btn btn-primary" type="submit">Add doctor</button>
+</form></article>
+<article class="staff-management-card">
+<h3>Doctor directory management</h3>
+<p class="muted">There are {{ doctors|length }} doctor profiles, including inactive profiles.</p>
+<div class="staff-doctor-list">
+{% for doctor in doctors %}
+<div class="staff-doctor-row"><div><strong>{{ doctor.name }}</strong><p>{{ doctor.specialty }} · {{ 'Active' if doctor.is_active else 'Inactive' }}</p></div>
+<form method="post" action="{{ url_for('staff_toggle_doctor', doctor_id=doctor.id) }}"><button class="btn {% if doctor.is_active %}btn-outline{% else %}btn-primary{% endif %}" type="submit">{{ 'Deactivate' if doctor.is_active else 'Activate' }}</button></form></div>
+{% else %}<p class="empty-note">No doctor profiles found.</p>{% endfor %}
+</div></article>
+</div></section>{% endif %}{% if section == 'clinic-overview' %}
+<section class="dash-panel" id="clinic-overview">
+<div class="panel-heading"><div><div class="section-overline">CLINIC OVERVIEW</div><h2>Statistics & activity</h2><p>Clinic-level counts and the latest recorded administrative actions.</p></div></div>
+<div class="stats-grid staff-stats">
+<article class="stat-card"><span>Registered patients</span><strong>{{ stats.patients }}</strong><small>Patient accounts</small></article>
+<article class="stat-card"><span>All doctor profiles</span><strong>{{ doctors|length }}</strong><small>Active and inactive</small></article>
+<article class="stat-card"><span>Total bookings</span><strong>{{ stats.bookings }}</strong><small>{{ stats.pending }} awaiting review</small></article>
+</div>
+<h3>Recent audit activity</h3>
+<div class="staff-audit-list">{% for item in logs %}
+<div class="staff-audit-row"><span>{{ item.created_at[:16].replace('T',' ') }}</span><div><strong>{{ item.actor_name or 'System' }}</strong><p>{{ item.action }} · {{ item.target_type }} #{{ item.target_id }}</p></div></div>
+{% else %}<p class="empty-note">No recorded activity yet. Doctor management actions will appear here.</p>{% endfor %}</div>
+</section>{% endif %}{% if section == 'doctor-directory' %}
+<section class="dash-panel" id="doctor-directory">
+<div class="panel-heading"><div><div class="section-overline">DOCTOR DIRECTORY</div><h2>Active doctor profiles</h2><p>Browse the doctor profiles currently visible to patients. This section stays within the Staff workspace.</p></div></div>
+<div class="staff-directory-grid">
+{% for doctor in doctors if doctor.is_active %}
+<article class="staff-directory-card">
+<div class="section-overline">{{ doctor.specialty }}</div>
+<h3>{{ doctor.name }}</h3>
+{% if doctor.qualification %}<p><strong>Qualification:</strong> {{ doctor.qualification }}</p>{% endif %}
+{% if doctor.university %}<p><strong>University:</strong> {{ doctor.university }}</p>{% endif %}
+{% if doctor.years_experience is not none %}<p><strong>Experience:</strong> {{ doctor.years_experience }} years</p>{% endif %}
+{% if doctor.languages %}<p><strong>Languages:</strong> {{ doctor.languages }}</p>{% endif %}
+{% if doctor.clinic_name %}<p><strong>Clinic:</strong> {{ doctor.clinic_name }}</p>{% endif %}
+{% if doctor.clinic_location %}<p><strong>Location:</strong> {{ doctor.clinic_location }}</p>{% endif %}
+</article>
+{% else %}
+<p class="empty-note">No active doctor profiles are available.</p>
+{% endfor %}
+</div>
+</section>{% endif %}
+<p class="form-safety-note">Privacy reminder: access patient appointment details only for authorised coordination. This prototype uses fictional doctor profiles and is not intended for real clinical operations.</p></main><script src="{{ url_for('static', filename='display-settings.js') }}"></script></body></html>

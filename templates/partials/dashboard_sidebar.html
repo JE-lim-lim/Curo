@@ -1,0 +1,16 @@
+<aside class="sidebar"><a class="dash-logo" href="{{ url_for('home') }}" aria-label="Curo homepage"><span class="theme-logo" aria-hidden="true"><img class="logo-light" src="{{ url_for('static', filename='assets/curo-logo.png') }}" alt=""><img class="logo-dark" src="{{ url_for('static', filename='assets/curo-logo-darkmode.png') }}" alt=""></span></a>{% if user.role == 'staff' %}<div class="sidebar-label">STAFF WORKSPACE</div>
+<a class="side-link {% if request.endpoint=='staff_dashboard' %}active{% endif %}" href="{{ url_for('staff_dashboard') }}">▣ &nbsp; Appointment desk</a>
+<a class="side-link {% if active_page=='doctors' %}active{% endif %}" href="{{ url_for('doctor_directory') }}">✚ &nbsp; Doctor directory</a>
+{% else %}<div class="sidebar-label">YOUR SPACE</div>
+<a class="side-link {% if active_page=='overview' %}active{% endif %}" href="{{ url_for('dashboard') }}">▦ &nbsp; Overview</a>
+<a class="side-link {% if active_page=='clearcare' %}active{% endif %}" href="{{ url_for('clearcare_page') }}">✳ &nbsp; ClearCare</a>
+<a class="side-link {% if active_page=='care-plan' %}active{% endif %}" href="{{ url_for('care_plan_page') }}">✓ &nbsp; Care plan</a>
+<a class="side-link {% if active_page=='appointments' %}active{% endif %}" href="{{ url_for('appointments_page') }}">▣ &nbsp; Appointments</a>
+<a class="side-link {% if active_page=='reminders' %}active{% endif %}" href="{{ url_for('reminders_page') }}">◷ &nbsp; Reminders</a>
+<a class="side-link {% if active_page=='doctors' %}active{% endif %}" href="{{ url_for('doctor_directory') }}">✚ &nbsp; Find a doctor</a>
+<a class="side-link {% if active_page=='medications' %}active{% endif %}" href="{{ url_for('medications_page') }}">＋ &nbsp; Medication records</a>
+<a class="side-link {% if active_page=='assistant' %}active{% endif %}" href="{{ url_for('assistant_page') }}">✦ &nbsp; Care Assistant</a>{% endif %}
+<div class="sidebar-bottom"><div class="sidebar-profile sidebar-profile-identity">
+{% if user.role == 'staff' %}<span class="user-avatar">{{ (user.name or 'S')[:1]|upper }}</span><span class="sidebar-profile-name">{{ user.name }}</span>
+{% else %}<a class="user-avatar avatar-profile-link" href="{{ url_for('profile_page') }}" title="Edit profile" aria-label="Open profile settings">{% if user.avatar_path %}<img src="{{ url_for('static', filename=user.avatar_path) }}" alt="">{% else %}{{ (user.name or 'U')[:1]|upper }}{% endif %}<span class="avatar-edit-indicator" aria-hidden="true">✎</span></a><a class="sidebar-profile-name" href="{{ url_for('profile_page') }}" title="Edit profile">{{ user.name }}</a>{% endif %}
+</div>{% if user.role == 'staff' %}<form method="post" action="{{ url_for('logout') }}"><button class="btn staff-logout staff-logout-danger" type="submit">Log out</button></form>{% endif %}</div></aside>

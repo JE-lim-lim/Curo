@@ -1,0 +1,1 @@
+<header class="dash-top"><div><div class="section-overline">{% if user.role == 'staff' %}CURO STAFF WORKSPACE{% else %}YOUR PERSONAL CARE SPACE{% endif %}</div><h1>{{ page_title }}</h1><p>{{ page_subtitle }}</p></div><div class="dash-top-actions">{% include "partials/chat_widget.html" %}{% include "partials/display_settings.html" %}</div></header>

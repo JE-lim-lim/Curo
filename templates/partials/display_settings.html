@@ -1,0 +1,8 @@
+<button class="display-settings-trigger" id="displaySettingsTrigger" type="button" aria-label="Display settings" aria-haspopup="dialog" aria-expanded="false"><span class="display-aa">Aa</span><span class="display-label">Display</span></button>
+<section class="display-settings-panel" id="displaySettingsPanel" role="dialog" aria-modal="false" aria-labelledby="displaySettingsTitle" hidden>
+  <div class="display-settings-header"><div><h2 id="displaySettingsTitle">Display settings</h2><p>Make Curo more comfortable to use.</p></div><button class="display-settings-close" id="displaySettingsClose" type="button" aria-label="Close display settings">×</button></div>
+  <div class="display-setting-row"><label for="prefFontSize">Font size</label><select id="prefFontSize" data-pref="fontSize"><option value="small">Standard</option><option value="default">Large</option><option value="large">Extra large</option></select><small>Changes text size across Curo.</small></div>
+  <div class="display-setting-row"><label for="prefTheme">Theme</label><select id="prefTheme" data-pref="theme"><option value="light">Light</option><option value="dark">Dark</option></select><small>Switch between light and dark appearance.</small></div>
+  <div class="display-setting-row"><label for="prefDensity">Layout density</label><select id="prefDensity" data-pref="density"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select><small>Comfortable adds space; Compact reduces card and section spacing.</small></div>
+  <div class="display-settings-footer"><span id="displaySettingsStatus" role="status">Preferences are saved on this device.</span><button class="display-settings-reset" id="displaySettingsReset" type="button">Reset</button></div>
+</section>

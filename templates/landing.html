@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Curo — Care & Cure</title>
+<script>try{const p=JSON.parse(localStorage.getItem('curo_display_preferences')||'{}');document.documentElement.dataset.theme=p.theme==='dark'?'dark':'light';document.documentElement.dataset.fontSize=['small','default','large'].includes(p.fontSize)?p.fontSize:'default';document.documentElement.dataset.density=p.density==='compact'?'compact':'comfortable'}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head><body class="landing-body">
+{% include "partials/public_header.html" %}
+<main class="page"><section class="hero hero-carousel" aria-label="Curo care introduction">
+  <div class="hero-carousel-viewport" aria-hidden="true"><div class="hero-carousel-track">
+    {% for i in range(1,7) %}<img src="{{ url_for('static', filename='assets/hero/care' ~ i ~ '.jpg') }}" alt="">{% endfor %}
+    {% for i in range(1,7) %}<img src="{{ url_for('static', filename='assets/hero/care' ~ i ~ '.jpg') }}" alt="">{% endfor %}
+  </div></div><div class="hero-overlay"></div>
+  <div class="hero-copy"><div class="hero-kicker">CARE, CONNECTED</div><h1>Make healthcare<br>feel <em>clearer.</em></h1><p>Understand care instructions, organise next steps, and keep the details that matter in one calmer, more connected place.</p>
+    <div class="hero-actions">{% if user %}<a class="btn btn-primary btn-large" href="{{ url_for('dashboard') }}">Open My Care Space →</a>{% else %}<a class="btn btn-primary btn-large" href="{{ url_for('signup') }}">Sign up →</a><a class="btn btn-hero-outline btn-large" href="#about">Explore Curo</a>{% endif %}</div>
+  </div><div class="hero-fade"></div>
+</section>
+<section class="home-block" id="about"><div class="section-ribbon">About Us</div><div class="home-inner"><h2>Care information, connected to action.</h2><p class="home-lead">Curo brings two simple ideas together: making written care instructions easier to review, and keeping confirmed next steps organised in one personal care space.</p><div class="feature-grid feature-grid-single">
+<article class="feature-card feature-combined">
+  <div class="feature-combined-intro"><div class="mini-icon">♡</div><div><h3>One calmer place for care</h3><p>MedBridge and ClearCare work together to help patients and caregivers understand written instructions, organise daily care, and keep track of what comes next — without replacing professional medical advice.</p></div></div>
+  <div class="feature-pair">
+    <section><div class="feature-label">01 · MEDBRIDGE</div><h4>Medication &amp; Care Companion</h4><p>Organise medication schedules, taken or missed status, daily care checklists, appointments, and caregiver task completion in a visual daily timeline.</p></section>
+    <section><div class="feature-label">02 · CLEARCARE</div><h4>Medical Instructions Translator</h4><p>Paste instructions or upload a sample PDF, then review a plain-English or Bahasa Malaysia explanation beside the original text, organised into instructions, follow-up, warning signs, and questions for a doctor.</p></section>
+  </div>
+</article>
+</div></div></section>
+<section class="home-block faq-section" id="faq"><div class="section-ribbon">FAQ</div><div class="faq-card">
+<details><summary>What is Curo?</summary><p>Curo is a healthcare web application designed to help people review written care instructions and organise follow-up tasks.</p></details>
+<details><summary>Does ClearCare provide medical advice?</summary><p>No. ClearCare organises wording from the source as a reading aid. AI-assisted explanations can be imperfect; always compare the result with the original instructions and ask a qualified healthcare professional about anything unclear or conflicting.</p></details>
+<details><summary>Can I save my care tasks and appointments?</summary><p>Yes. After creating an account and signing in, you can manage tasks, appointments and medication records in your personal dashboard.</p></details>
+</div></section>
+<section class="home-block contact-section" id="contact"><div class="section-ribbon">Contact Us</div><div class="contact-grid">
+<a class="contact-item" href="https://gmail.com/" target="_blank" rel="noopener noreferrer"><img src="{{ url_for('static', filename='assets/social/gmail.png') }}" alt="Gmail"><span>curo@gmail.com</span></a>
+<a class="contact-item" href="https://facebook.com/" target="_blank" rel="noopener noreferrer"><img src="{{ url_for('static', filename='assets/social/facebook.png') }}" alt="Facebook"><span>Curo Official</span></a>
+<a class="contact-item" href="https://instagram.com/" target="_blank" rel="noopener noreferrer"><img src="{{ url_for('static', filename='assets/social/instagram.png') }}" alt="Instagram"><span>curo.official</span></a>
+</div></section></main>
+{% include "partials/public_footer.html" %}
+<script src="{{ url_for('static', filename='display-settings.js') }}"></script>
+</body></html>

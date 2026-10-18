@@ -1,0 +1,28 @@
+{% if user and user.role == 'patient' %}
+<div class="curo-chat-launcher" data-chat-launcher>
+  <button class="curo-chat-fab" type="button" aria-label="Open Curo Care Assistant" aria-expanded="false" data-chat-toggle>
+    <span aria-hidden="true">✦</span><span class="curo-chat-fab-label">Ask Curo</span>
+  </button>
+  <section class="curo-chat-popover" data-chat-root data-chat-compact hidden aria-label="Curo Care Assistant chat">
+    <header class="curo-chat-header">
+      <div class="curo-chat-avatar" aria-hidden="true">♡</div>
+      <div class="curo-chat-header-copy"><strong>Curo Care Assistant</strong><small>Helpful guidance, not medical advice</small></div>
+      <button class="curo-chat-close" type="button" aria-label="Close chat" data-chat-close>×</button>
+    </header>
+    <div class="curo-chat-messages" data-chat-messages aria-live="polite" aria-relevant="additions">
+      <div class="curo-chat-message assistant"><div class="curo-chat-message-label">Curo</div><p>Hello! I can help you use Curo or explain wording in care instructions. Please don't share identifying details.</p></div>
+    </div>
+    <div class="curo-chat-quick-prompts">
+      <button type="button" data-prompt="How do I use ClearCare?">Using ClearCare</button>
+      <button type="button" data-prompt="Help me prepare questions for my doctor.">Questions for my doctor</button>
+    </div>
+    <form class="curo-chat-form" data-chat-form>
+      <label class="sr-only" for="curoChatInput">Your message</label>
+      <textarea id="curoChatInput" data-chat-input rows="1" maxlength="3000" placeholder="Ask a question…" required></textarea>
+      <button type="submit" class="curo-chat-send" aria-label="Send message">➤</button>
+    </form>
+    <div class="curo-chat-footer"><a href="{{ url_for('assistant_page') }}">Open full assistant →</a><span>Not for emergencies</span></div>
+  </section>
+</div>
+<script src="{{ url_for('static', filename='chatbot.js') }}" defer></script>
+{% endif %}

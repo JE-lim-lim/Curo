@@ -1,0 +1,53 @@
+<footer class="site-footer site-footer-expanded">
+  <div class="footer-main">
+    <div class="footer-about">
+      <a class="footer-brand" href="{{ url_for('home') }}" aria-label="Curo homepage">
+        <span class="theme-logo" aria-hidden="true"><img class="logo-light" src="{{ url_for('static', filename='assets/curo-logo.png') }}" alt=""><img class="logo-dark" src="{{ url_for('static', filename='assets/curo-logo-darkmode.png') }}" alt=""></span>
+      </a>
+      <p class="footer-tagline">Care information, connected to action.</p>
+      <p class="footer-description">A calmer place to understand written care instructions, organise next steps and keep important details together.</p>
+    </div>
+
+    <nav class="footer-column" aria-label="Explore Curo">
+      <h2>Explore Curo</h2>
+      <a href="{{ url_for('home') }}#about">About Us</a>
+      <a href="{{ url_for('home') }}#faq">Frequently Asked Questions</a>
+      <a href="{{ url_for('home') }}#contact">Contact Us</a>
+    </nav>
+
+    <nav class="footer-column" aria-label="Care space">
+      <h2>Your Care Space</h2>
+      {% if user %}
+        <a href="{{ url_for('dashboard') }}">Overview</a>
+        <a href="{{ url_for('clearcare_page') }}">ClearCare</a>
+        <a href="{{ url_for('care_plan_page') }}">Care plan</a>
+        <a href="{{ url_for('appointments_page') }}">Appointments</a>
+        <a href="{{ url_for('medications_page') }}">Medication records</a>
+        <a href="{{ url_for('assistant_page') }}">Care Assistant</a>
+      {% else %}
+        <a href="{{ url_for('signup') }}">Create an account</a>
+        <a href="{{ url_for('login') }}">Sign in</a>
+        <a href="{{ url_for('home') }}#about">MedBridge &amp; ClearCare</a>
+      {% endif %}
+    </nav>
+
+    <div class="footer-column footer-connect">
+      <h2>Connect</h2>
+      <a href="https://gmail.com/" target="_blank" rel="noopener noreferrer">Email <span>curo@gmail.com</span></a>
+      <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer">Facebook <span>Curo Official</span></a>
+      <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer">Instagram <span>curo.official</span></a>
+      <p class="footer-safety">Curo is a personal care organiser, not a replacement for professional medical advice.</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>Copyright © 2026 Curo · Care &amp; Cure</span>
+    <nav class="footer-bottom-links" aria-label="Footer navigation">
+      <a href="{{ url_for('home') }}#about">About Us</a>
+      <span class="footer-link-separator" aria-hidden="true">|</span>
+      <a href="{{ url_for('home') }}#faq">FAQ</a>
+      <span class="footer-link-separator" aria-hidden="true">|</span>
+      <a href="{{ url_for('home') }}#contact">Contact Us</a>
+    </nav>
+  </div>
+</footer>

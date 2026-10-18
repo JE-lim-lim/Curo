@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Edit profile — Curo</title>
+<script>try{const p=JSON.parse(localStorage.getItem('curo_display_preferences')||'{}');document.documentElement.dataset.theme=p.theme==='dark'?'dark':'light';document.documentElement.dataset.fontSize=['small','default','large'].includes(p.fontSize)?p.fontSize:'default';document.documentElement.dataset.density=p.density==='compact'?'compact':'comfortable'}catch(e){document.documentElement.dataset.theme='light'}</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-body">
+{% include "partials/dashboard_sidebar.html" %}
+<main class="dashboard-main">
+{% include "partials/dashboard_top.html" %}
+<section class="dash-panel profile-panel">
+  <div class="section-overline" data-text-scale="true">YOUR ACCOUNT</div>
+  <h2>Edit profile</h2>
+  <p>Keep your contact details and care preferences up to date.</p>
+  {% if error %}<div class="error-message" role="alert">{{ error }}</div>{% endif %}
+  {% if success %}<div class="success-message" role="status">{{ success }}</div>{% endif %}
+  <form class="stack-form profile-form" method="post" enctype="multipart/form-data">
+    <h3 class="profile-section-title">Profile photo</h3>
+    <div class="profile-photo-editor">
+      <div class="profile-photo-preview" id="profilePhotoPreview">{% if user.avatar_path %}<img src="{{ url_for('static', filename=user.avatar_path) }}" alt="Current profile photo">{% else %}<span>{{ (user.name or 'U')[:1]|upper }}</span>{% endif %}</div>
+      <div class="profile-photo-controls"><label class="btn btn-outline upload-photo-label" for="avatar">Upload photo</label><input class="profile-photo-input" id="avatar" name="avatar" type="file" accept="image/png,image/jpeg,image/webp"><small>PNG, JPG or WEBP · up to 5 MB</small>{% if user.avatar_path %}<label class="remove-photo-option"><input type="checkbox" name="remove_avatar" value="1"> Remove current photo</label>{% endif %}</div>
+    </div>
+    <h3 class="profile-section-title">Basic information</h3>
+    <div class="profile-fields-grid">
+      <label for="name">Full name <span class="field-required">Required</span><input id="name" name="name" value="{{ user.name }}" autocomplete="name" required minlength="2"></label>
+      <label for="email">Email address <span class="field-required">Required</span><input id="email" name="email" type="email" value="{{ user.email }}" autocomplete="email" required></label>
+      <label for="age">Age <span class="field-optional">Optional</span><input id="age" name="age" type="number" min="0" max="120" step="1" value="{{ user.age if user.age is not none else '' }}" inputmode="numeric" placeholder="e.g. 42"></label>
+      <label for="gender">Gender <span class="field-optional">Optional</span><select id="gender" name="gender"><option value="" {% if not user.gender %}selected{% endif %}>Choose not to specify</option>{% for option in ['Female','Male','Non-binary','Prefer not to say','Self-describe'] %}<option value="{{ option }}" {% if user.gender == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></label>
+      <label for="phone">Phone number <span class="field-optional">Optional</span><input id="phone" name="phone" type="tel" autocomplete="tel" value="{{ user.phone or '' }}" placeholder="e.g. +60 12-345 6789"></label>
+      <label for="preferred_language">Preferred language <span class="field-optional">Optional</span><select id="preferred_language" name="preferred_language">{% for option in ['English','Bahasa Malaysia','中文','Tamil','Other'] %}<option value="{{ option }}" {% if (user.preferred_language or 'English') == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></label>
+    </div>
+    <h3 class="profile-section-title profile-section-spaced">Emergency contact <span class="field-optional">Optional</span></h3>
+    <p class="profile-help">Add someone to contact if you need support. Curo is a personal organiser, not an emergency service.</p>
+    <div class="profile-fields-grid">
+      <label for="emergency_contact_name">Contact name<input id="emergency_contact_name" name="emergency_contact_name" value="{{ user.emergency_contact_name or '' }}" autocomplete="off" placeholder="Full name"></label>
+      <label for="emergency_contact_phone">Contact phone number<input id="emergency_contact_phone" name="emergency_contact_phone" type="tel" value="{{ user.emergency_contact_phone or '' }}" autocomplete="off" placeholder="e.g. +60 12-345 6789"></label>
+    </div>
+    <p class="profile-privacy-note"><strong>Your choice:</strong> Only your name and email are required. Age, gender, phone, language and emergency contact are optional. Enter only information you are comfortable storing in this prototype.</p>
+    <div class="profile-actions"><button class="btn btn-primary" type="submit">Save changes</button><a class="btn btn-outline" href="{{ url_for('dashboard') }}">Cancel</a></div>
+  </form>
+  <form action="{{ url_for('logout') }}" method="post" class="logout-form"><button class="btn btn-danger logout-red" type="submit">Log out</button></form>
+</section>
+</main>
+<script>
+(() => {
+  const input = document.getElementById('avatar');
+  const preview = document.getElementById('profilePhotoPreview');
+  if (!input || !preview) return;
+  input.addEventListener('change', () => {
+    const file = input.files && input.files[0];
+    if (!file) return;
+    if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
+      input.value = '';
+      alert('Please choose a PNG, JPG or WEBP image.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      input.value = '';
+      alert('Please choose an image smaller than 5 MB.');
+      return;
+    }
+    const img = document.createElement('img');
+    img.alt = 'Profile photo preview';
+    img.src = URL.createObjectURL(file);
+    preview.replaceChildren(img);
+  });
+})();
+</script>
+<script src="{{ url_for('static', filename='display-settings.js') }}"></script>
+
+</body></html>
